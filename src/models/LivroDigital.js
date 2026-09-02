@@ -3,8 +3,8 @@ const Livro = require("./Livro");
 class LivroDigital extends Livro {
     #tamanhoArquivo;
 
-    constructor(titulo, autor, preco, estoque, tamanhoArquivo) {
-        super(titulo, autor, preco, estoque);
+    constructor(titulo, autor, preco, estoque, tamanhoArquivo, categoria) {
+        super(titulo, autor, preco, estoque, categoria);
         this.#tamanhoArquivo = tamanhoArquivo;
     }
 

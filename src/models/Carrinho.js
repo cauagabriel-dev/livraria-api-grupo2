@@ -9,19 +9,17 @@ class Carrinho {
     this.#livros.push(livro);
   }
   
+  exibirItem(livro) {
+  console.log(livro.titulo + " - R$ " + livro.preco);
+  }
+
   listar() {
     console.log("--- Itens do carrinho ---");
-    this.#livros.forEach((livro) => {
-      console.log(livro.titulo + " - R$ " + livro.preco);
-    });
+    this.#livros.forEach((livro) => this.exibirItem(livro));
   }
 
   calcularTotal() {
-    let total = 0;
-    this.#livros.forEach((livro) => {
-      total = total + livro.preco;
-    });
-    return total;
+    return this.#livros.reduce((total, livro) => total + livro.preco, 0);
   }
 }
 

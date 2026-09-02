@@ -1,10 +1,11 @@
 const Livro = require("./Livro");
 
+const TAXA_FRETE_POR_KG = 2.5;
 class LivroFisico extends Livro {
     #peso;
 
-    constructor(titulo,autor, preco, estoque, peso) {
-        super(titulo, autor, preco, estoque); //Chamando o construtor da classe Mãe
+    constructor(titulo,autor, preco, estoque, peso, categoria) {
+        super(titulo, autor, preco, estoque, categoria); //Chamando o construtor da classe Mãe
         this.#peso = peso;
     }
 
@@ -13,7 +14,7 @@ class LivroFisico extends Livro {
     }
 
     calcularFrete(){
-        return this.#peso * 2.5;
+        return this.#peso * TAXA_FRETE_POR_KG;
     }
 
     descrever() {

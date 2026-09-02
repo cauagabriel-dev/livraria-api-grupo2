@@ -1,3 +1,4 @@
+const PRECO_MINIMO = 0;
 class Livro { //Nome definido
   #preco;
   #estoque;
@@ -32,7 +33,7 @@ class Livro { //Nome definido
   }
 
   set preco(novoPreco) {
-    if (novoPreco < 0) {
+    if (novoPreco < PRECO_MINIMO) {
       console.log("ERRO: preco não pode ser negativo.Valor recusado");
       return;
     }

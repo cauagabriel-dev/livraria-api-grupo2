@@ -1,3 +1,4 @@
+const TAMANHO_MINIMO_NOME_CATEGORIA = 3; // É uma constante para validação do nome da categoria
 class Categoria { // Nome claro, evidencia
     #nome;
     #descricao; // Encapsulamento correto
@@ -20,8 +21,8 @@ class Categoria { // Nome claro, evidencia
     // ----- ESCRITA COM VALIDAÇÃO (setter) -----
 
     set nome(novoNome) {
-        if (novoNome.length < 3) {
-            console.log("ERRO: o nome da categoria precisa de pelo menos 3 letras.");
+        if (novoNome.length < TAMANHO_MINIMO_NOME_CATEGORIA) {
+            console.log("ERRO: o nome da categoria precisa de pelo menos " + TAMANHO_MINIMO_NOME_CATEGORIA + " letras.");
             return;
         }
         this.#nome = novoNome;
