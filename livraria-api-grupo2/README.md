@@ -37,7 +37,7 @@ Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 ### 1. 📐 Diagrama UML
 O diagrama de classes do sistema reflete a arquitetura do banco e das entidades do sistema (com suporte às classes do diretório `src/models/`).
 
-![Diagrama do Projeto](/docs/diagrama-uml.png)
+![Diagrama do Projeto](/diagrama-uml.png)
 
 ---
 
