@@ -1,65 +1,64 @@
-# livraria-api-grupo2
+# 📚 API de Gestão da Livraria (SA1)
 
-**API de Gestão da Livraria — PBE 2026**  
-API de Gestão da Livraria — Grupo 2  
-
-Projeto da UC de Programação Back-End — Curso Técnico em Desenvolvimento de Sistemas  
-Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1  
+Projeto desenvolvido durante as aulas de Programação Back-End (UC - PBE), turma SESI/SENAI.
 
 ---
 
-## 👥 Integrantes
-
-* **Ana Passos** — [@anapasso-spec](https://github.com/anapasso-spec)
-* **Cauã** — [@cauagabriel-dev](https://github.com/cauagabriel-dev)
-* **Laura Semensato** — [@laurasemensato](https://github.com/laurasemensato)
-* **Yago** — [@yagomx25](https://github.com/yagomx25)
+# API de Gestão da Livraria — Grupo 2
+Projeto da UC de Programação Back-End — Curso Técnico em Desenvolvimento de Sistemas
+Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 
 ---
 
-## 📌 Divisão de Responsabilidades
+## Integrantes
+- Ana Júlia Ledier Del Passo — @anapasso-spec
+- Cauã Gabriel Oliveira da Silva - @cauagabriel-dev 
+- Laura Nunes Semensato — @laurasemensato
+- Yago Henrique Sanches Rodrigues — @yagomx25
 
+---
+
+## Divisão de responsabilidades
 | Bloco | Integrante | O que ficou sob responsabilidade dele(a) |
-| :--- | :--- | :--- |
-| **Bloco 1** | Ana Passos | Modelagem e estruturação inicial dos Models (`Pessoa`, `Cliente`, `Funcionario`) |
-| **Bloco 1** | Cauã | Implementação dos modelos de produtos (`Livro`, `LivroFisico`, `LivroDigital`) |
-| **Bloco 1** | Laura Semensato | Regras de negócio do carrinho de compras e categorias (`Carrinho`, `Categoria`) |
-| **Bloco 1** | Yago | Configuração das rotas, controllers e scripts de teste (`index.js`, `testar.js`) |
-
-> *Esta tabela é atualizada a cada bloco, com rodízio de responsabilidades entre os integrantes do grupo.*
+|---|---|---|
+| Bloco 1 | *(a preencher)* | *(a preencher)* |
+> Esta tabela é atualizada **a cada bloco**, com rodízio de responsabilidades entre os
 
 ---
 
-## 🛠️ Tecnologias
-
-* **Node.js** — Ambiente de execução JavaScript no servidor
-* **npm** — Gerenciador de pacotes
-* **JavaScript (ES6+)** — Orientação a Objetos e lógica do sistema
-* **Git & GitHub** — Versionamento e trabalho em equipe
+## Tecnologias
+- Node.js
+- npm
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📌 Resumo do Bloco 2 - Consolidação do Processo
+
+### 1. 📐 Diagrama UML
+O diagrama de classes do sistema reflete a arquitetura do banco e das entidades do sistema (com suporte às classes do diretório `src/models/`).
+
+![Diagrama do Projeto](/diagrama-uml.png)
+
+---
+
+### 2. 🗂️ Estrutura do Esqueleto MVC
+O projeto foi estruturado seguindo o padrão **MVC (Model-View-Controller)** e preparado para a integração com o Express:
 
 ```text
 livraria-api-grupo2/
-├── docs/             # Documentação e materiais complementares
-├── src/              # Código-fonte principal da aplicação
-│   ├── controllers/  # Gerenciamento de requisições e respostas
-│   ├── models/       # Classes e modelos de dados (POO)
-│   │   ├── Carrinho.js
-│   │   ├── Categoria.js
-│   │   ├── Cliente.js
-│   │   ├── Funcionario.js
-│   │   ├── Livro.js
-│   │   ├── LivroDigital.js
-│   │   ├── LivroFisico.js
-│   │   └── Pessoa.js
-│   ├── routes/       # Definição dos endpoints e rotas da API
-│   ├── services/     # Regras de negócio e serviços da aplicação
-│   └── index.js      # Ponto de entrada da aplicação
-├── .gitignore        # Arquivos e pastas ignorados pelo Git
-├── package.json      # Configurações do projeto e dependências
-├── package-lock.json # Mapeamento exato de versões das dependências
-├── testar.js         # Script para testes locais e validação
-└── README.md         # Documentação principal do projeto
+├── docs/
+├── src/
+│   ├── controllers/      # Camada de controle (requisições e respostas)
+│   │   ├── categoriaController.js
+│   │   └── livroController.js
+│   ├── models/           # Entidades e regras de negócio/dados
+│   ├── routes/           # Mapeamento das rotas da API
+│   │   ├── categoriaRoutes.js
+│   │   └── livroRoutes.js
+│   ├── services/         # Camada de serviços e lógica da aplicação
+│   │   ├── categoriaService.js
+│   │   └── livroService.js
+│   └── index.js          # Ponto de entrada (Servidor Express)
+├── .gitignore
+├── package.json
+└── README.md
