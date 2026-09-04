@@ -11,7 +11,7 @@ Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 ## 👥 Integrantes
 
 * **Ana Passos** — [@anapasso-spec](https://github.com/anapasso-spec)
-* **Cauã** — [@cáua-dev](https://github.com/cáua-dev)
+* **Cauã** — [@cauagabriel-dev](https://github.com/cauagabriel-dev)
 * **Laura Semensato** — [@laurasemensato](https://github.com/laurasemensato)
 * **Yago** — [@yagomx25](https://github.com/yagomx25)
 
