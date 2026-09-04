@@ -40,7 +40,7 @@ O diagrama de classes do sistema reflete a arquitetura do banco e das entidades 
 > **Diagrama do Projeto:**![alt text](<docs/Diagrama - Livraria.png>)
 
 ### 2. 🗂️ Estrutura do Esqueleto MVC
-O projeto foi estruturado seguindo o padrão **MVC (Model-View-Controller)** e preparado para a integração com Express:
+O projeto foi estruturado seguindo o padrão **MVC (Model-View-Controller)** e preparado para a integração com o Express:
 
 ```text
 livraria-api-grupo2/
