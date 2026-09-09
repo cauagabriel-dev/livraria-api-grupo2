@@ -1,10 +1,13 @@
 const express = require("express"); //Traz a biblioteca instalada
+const livroRoutes = require("./routes/livroRoutes"); //Traz o arquivo de rotas
 
 const app = express();
 const PORTA = 3000;
 
+app.use("/livros", livroRoutes); //Usa as rotas de livroRoutes para o caminho /livros
+
 app.get("/", (req, res) => {
-  //res é requisição e res é resposta
+  //req é requisição e res é resposta
   res.send("API da Livraria no ar!");
 });
 
