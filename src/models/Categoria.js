@@ -34,6 +34,12 @@ class Categoria { // Nome claro, evidencia
         console.log("Categoria: " + this.#nome);
         console.log("Descricao: " + this.#descricao);
     }
+
+    toJSON() {
+        return {
+            nome: this.#nome,
+        };
+    }
 }
 
 module.exports = Categoria;
