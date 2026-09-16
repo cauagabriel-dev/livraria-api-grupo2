@@ -1,12 +1,15 @@
 const express = require("express"); //Traz a biblioteca instalada
-const livroRoutes = require("./routes/livroRoutes"); //Traz o arquivo de rotas
-const categoriaRoutes = require("./routes/categoriaRoutes"); //Traz o arquivo de rotas 
+// const categoriaRoutes = require("./routes/categoriaRoutes"); //Traz o arquivo de rotas 
+const routes = require("./routes");
+const logger = require("./middlewares/logger");
 
 const app = express();
 const PORTA = 3000;
 
-app.use("/livros", livroRoutes); //Usa as rotas de livroRoutes para o caminho /livros
-app.use("/categorias", categoriaRoutes); //Usa as rotas de categoriaRoutes para o caminho /categorias
+app.use(logger); //Vem primeiro, porque tem a parte de logar a requisição antes de passar para as rotas
+app.use(routes);
+
+// app.use("/categorias", categoriaRoutes); //Usa as rotas de categoriaRoutes para o caminho /categorias
 
 app.get("/", (req, res) => {
   //req é requisição e res é resposta

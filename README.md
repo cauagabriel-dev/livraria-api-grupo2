@@ -69,3 +69,13 @@ livraria-api-grupo2/
 ├── package-lock.json      # Mapeamento exato de versões das dependências
 ├── testar.js              # Script para testes locais e validação
 └── README.md              # Documentação principal do projeto
+
+---
+
+## Parte 3 - O experimento da ordem
+
+**O que aconteceu:**
+(Posicionar o app.use(routes) antes de app.use(logger))
+
+**Por quê:**
+(O motivo de o comportamento ter mudado com base na ordem dos middlewares do Express é devido a colocação errada da parte de rotas, antes do logger, não vai terá a parte de logar a requisição antes de passar para as rotas. Ou seja, se ele vem depois das rotas, a resposta vai ser enviada antes da requisição chegar nele.)
