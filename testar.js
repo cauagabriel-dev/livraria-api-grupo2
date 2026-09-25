@@ -1,9 +1,15 @@
-const Cliente = require("./Cliente");
-const Funcionario = require("./Funcionario");
+const livroService = require("./src/services/livroService");
 
-const c1 = new Cliente("Maria Silva", "maria@email.com", 150);
-const f1 = new Funcionario("Joao Souza", "joao@livraria.com", 2500);
+console.log("=== 1. LISTA INICIAL ===");
+console.log(livroService.listarLivros());
 
-c1.apresentar();
-console.log("");
-f1.apresentar();
+console.log("\n=== 2. TESTANDO PATCH (Atualização Parcial) ===");
+const livroAtualizado = livroService.atualizarParcialLivro(0, { preco: 110.0 });
+console.log("Livro após PATCH:", livroAtualizado);
+
+console.log("\n=== 3. TESTANDO DELETE ===");
+const deletado = livroService.deletarLivro(1);
+console.log("Foi deletado?", deletado);
+
+console.log("\n=== 4. LISTA FINAL DE LIVROS ===");
+console.log(livroService.listarLivros());
