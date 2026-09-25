@@ -44,5 +44,12 @@ function atualizarParcial(req, res) {
     res.status(200).json(livro);
 }
 
-
-module.exports = { listar, buscarPorIndice, criar};
+function deletar(req, res) {
+    const sucesso = livroService.deletarLivro(req.params.indice);
+    if (!sucesso) {
+        res.status(404).json({ erro: "Livro não encontrado" });
+        return;
+    }
+    res.status(204).send(); // O 204 significa sucesso sem corpo de resposta
+}
+module.exports = { listar, buscarPorIndice, criar, atualizar, atualizarParcial, deletar};

@@ -17,4 +17,6 @@ router.put("/:indice", livroController.atualizar);
 
 router.patch("/:indice", livroController.atualizarParcial);
 
+router.delete("/:indice", livroController.deletar);
+
 module.exports = router;
