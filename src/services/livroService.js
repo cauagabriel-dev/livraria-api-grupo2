@@ -7,13 +7,18 @@ const Livro = require("../models/Livro");
 const livros = [
   new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
   new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
+  new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
+  new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
 ];
 
+function listarTodos() {
+  return livros;
 function listarTodos() {
   return livros;
 }
 
 function buscarLivroPorIndice(indice) {
+  return livros[indice];
   return livros[indice];
 }
 
@@ -41,12 +46,27 @@ function criarLivro(dados) {
   );
   livros.push(novoLivro); //Adiciona um no final
   return novoLivro;
+  const novoLivro = new Livro(
+    dados.titulo,
+    dados.autor,
+    dados.preco,
+    dados.estoque,
+  );
+  livros.push(novoLivro); //Adiciona um no final
+  return novoLivro;
 }
 
 function atualizarLivro(indice, dados) {
   const livro = livros[indice];
   if (!livro) return null;
+  const livro = livros[indice];
+  if (!livro) return null;
 
+  livro.titulo = dados.titulo;
+  livro.autor = dados.autor;
+  livro.preco = dados.preco;
+  livro.estoque = dados.estoque;
+  return livro;
   livro.titulo = dados.titulo;
   livro.autor = dados.autor;
   livro.preco = dados.preco;
@@ -57,7 +77,14 @@ function atualizarLivro(indice, dados) {
 function atualizarParcialLivro(indice, dados) {
   const livro = livros[indice];
   if (!livro) return null;
+  const livro = livros[indice];
+  if (!livro) return null;
 
+  if (dados.titulo !== undefined) livro.titulo = dados.titulo;
+  if (dados.autor !== undefined) livro.autor = dados.autor;
+  if (dados.preco !== undefined) livro.preco = dados.preco;
+  if (dados.estoque !== undefined) livro.estoque = dados.estoque;
+  return livro;
   if (dados.titulo !== undefined) livro.titulo = dados.titulo;
   if (dados.autor !== undefined) livro.autor = dados.autor;
   if (dados.preco !== undefined) livro.preco = dados.preco;
@@ -71,7 +98,22 @@ function deletarLivro(indice) {
 
   livros.splice(indice, 1);
   return true;
+  const livro = livros[indice];
+  if (!livro) return false;
+
+  livros.splice(indice, 1);
+  return true;
 }
+
+module.exports = {
+  listarTodos,
+  listarLivros,
+  buscarLivroPorIndice,
+  criarLivro,
+  atualizarLivro,
+  atualizarParcialLivro,
+  deletarLivro,
+};
 
 module.exports = {
   listarTodos,
