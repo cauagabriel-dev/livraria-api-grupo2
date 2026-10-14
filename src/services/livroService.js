@@ -7,7 +7,7 @@ const Livro = require("../models/Livro");
 const livros = [
   new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
   new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
- ];
+];
 
 function listarTodos() {
   return livros;
@@ -15,16 +15,23 @@ function listarTodos() {
 
 function buscarLivroPorIndice(indice) {
   return livros[indice];
-  return livros[indice];
 }
 
 function listarLivros(filtros) {
   let resultado = livros;
+  
   if (filtros.autor) {
     resultado = resultado.filter((livro) =>
       livro.autor.toLowerCase().includes(filtros.autor.toLowerCase()),
     );
   }
+  
+  if (filtros.titulo) { 
+    resultado = resultado.filter((livro) => 
+      livro.titulo.toLowerCase().includes(filtros.titulo.toLowerCase()) 
+    ); 
+  }
+
   if (filtros.precoMax) {
     resultado = resultado.filter(
       (livro) => livro.preco <= Number(filtros.precoMax),
@@ -58,7 +65,6 @@ function atualizarLivro(indice, dados) {
 function atualizarParcialLivro(indice, dados) {
   const livro = livros[indice];
   if (!livro) return null;
-  
 
   if (dados.titulo !== undefined) livro.titulo = dados.titulo;
   if (dados.autor !== undefined) livro.autor = dados.autor;
@@ -82,5 +88,5 @@ module.exports = {
   criarLivro,
   atualizarLivro,
   atualizarParcialLivro,
-  deletarLivro
+  deletarLivro,
 };

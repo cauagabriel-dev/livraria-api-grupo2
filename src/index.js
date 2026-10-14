@@ -1,18 +1,20 @@
-const express = require("express"); //Traz a biblioteca instalada
-// const categoriaRoutes = require("./routes/categoriaRoutes"); //Traz o arquivo de rotas 
-const routes = require("./routes");
+const express = require("express"); // Traz a biblioteca instalada
+const routes = require("./routes"); // Traz o arquivo de rotas unificado
 const logger = require("./middlewares/logger");
 
 const app = express();
 const PORTA = 3000;
 
-app.use(logger); //Vem primeiro, porque tem a parte de logar a requisição antes de passar para as rotas
+// ⚠️ ESSA LINHA É OBRIGATÓRIA: Habilita o Express a ler JSON no req.body
+app.use(express.json()); 
+// Middleware de Log (executado antes de processar as rotas)
+app.use(logger); 
+
+// Carrega todas as rotas da aplicação
 app.use(routes);
 
-// app.use("/categorias", categoriaRoutes); //Usa as rotas de categoriaRoutes para o caminho /categorias
-
+// Rotas básicas institucionais
 app.get("/", (req, res) => {
-  //req é requisição e res é resposta
   res.send("API da Livraria no ar!");
 });
 
@@ -20,6 +22,7 @@ app.get("/sobre", (req, res) => {
   res.send("Livraria SENAI - Trabalho de PBE, turma 1-2026-SESI_DEV_OC_1");
 });
 
+// Inicialização do servidor
 app.listen(PORTA, () => {
-    console.log("Servidor rodando em http://localhost:" + PORTA);
+  console.log("Servidor rodando em http://localhost:" + PORTA);
 });
