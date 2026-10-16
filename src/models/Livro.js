@@ -1,5 +1,6 @@
 const PRECO_MINIMO = 0;
-class Livro { //Nome definido
+
+class Livro {
   #preco;
   #estoque;
 
@@ -16,10 +17,11 @@ class Livro { //Nome definido
     console.log("Autor: " + this.autor);
     console.log("Preco: R$ " + this.#preco);
     console.log("Estoque: " + this.#estoque + " unidades");
-    console.log("Categoria: " + this.categoria.nome);
+    if (this.categoria && this.categoria.nome) {
+      console.log("Categoria: " + this.categoria.nome);
+    }
   }
 
-  //Método pequeno
   valorEmEstoque() {
     return this.#preco * this.#estoque;
   }
@@ -44,17 +46,18 @@ class Livro { //Nome definido
     if (novoEstoque < 0) {
       throw new Error("Estoque não pode ser negativo");
     }
+    this.#estoque = novoEstoque;
   }
 
   toJSON() {
     return {
+      id: this.id,
       titulo: this.titulo,
       autor: this.autor,
       preco: this.#preco,
       estoque: this.#estoque
-    }
+    };
   }
-
 }
 
 module.exports = Livro;

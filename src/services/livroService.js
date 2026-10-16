@@ -1,90 +1,60 @@
-// SERVICE (o "cozinheiro"): executa a logica de verdade.
-// Buscar, calcular, validar.
-// Implementacao chega no Bloco 3.
-
 const Livro = require("../models/Livro");
 
-const livros = [
-  new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
-  new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
-];
-
-function listarTodos() {
-  return livros;
-}
-
-function buscarLivroPorIndice(indice) {
-  return livros[indice];
-}
-
-function listarLivros(filtros) {
-  let resultado = livros;
-  
-  if (filtros.autor) {
-    resultado = resultado.filter((livro) =>
-      livro.autor.toLowerCase().includes(filtros.autor.toLowerCase()),
-    );
-  }
-  
-  if (filtros.titulo) { 
-    resultado = resultado.filter((livro) => 
-      livro.titulo.toLowerCase().includes(filtros.titulo.toLowerCase()) 
-    ); 
-  }
-
-  if (filtros.precoMax) {
-    resultado = resultado.filter(
-      (livro) => livro.preco <= Number(filtros.precoMax),
-    );
-  }
-  return resultado;
-}
+const livros = [];
+let proximoId = 1;
 
 function criarLivro(dados) {
-  const novoLivro = new Livro(
-    dados.titulo,
-    dados.autor,
-    dados.preco,
-    dados.estoque,
-  );
-  livros.push(novoLivro); //Adiciona um no final
+  const novoLivro = new Livro(dados.titulo, dados.autor, dados.preco, dados.estoque, dados.categoria);
+  novoLivro.id = proximoId;
+  proximoId++;
+  livros.push(novoLivro);
   return novoLivro;
 }
 
-function atualizarLivro(indice, dados) {
-  const livro = livros[indice];
+criarLivro({ titulo: "Clean Code", autor: "Robert C. Martin", preco: 89.9, estoque: 12, categoria: { nome: "Tecnologia" } });
+criarLivro({ titulo: "Eloquent JavaScript", autor: "Marijn Haverbeke", preco: 45.0, estoque: 20, categoria: { nome: "Tecnologia" } });
+
+function buscarLivroPorId(id) {
+  return livros.find((livro) => livro.id === Number(id));
+}
+
+function atualizarLivro(id, novosDados) {
+  const livro = buscarLivroPorId(id);
   if (!livro) return null;
 
-  livro.titulo = dados.titulo;
-  livro.autor = dados.autor;
-  livro.preco = dados.preco;
-  livro.estoque = dados.estoque;
+  livro.titulo = novosDados.titulo;
+  livro.autor = novosDados.autor;
+  livro.preco = novosDados.preco;
+  livro.estoque = novosDados.estoque;
   return livro;
 }
 
-function atualizarParcialLivro(indice, dados) {
-  const livro = livros[indice];
+function atualizarParcialLivro(id, novosDados) {
+  const livro = buscarLivroPorId(id);
   if (!livro) return null;
 
-  if (dados.titulo !== undefined) livro.titulo = dados.titulo;
-  if (dados.autor !== undefined) livro.autor = dados.autor;
-  if (dados.preco !== undefined) livro.preco = dados.preco;
-  if (dados.estoque !== undefined) livro.estoque = dados.estoque;
+  if (novosDados.titulo !== undefined) livro.titulo = novosDados.titulo;
+  if (novosDados.autor !== undefined) livro.autor = novosDados.autor;
+  if (novosDados.preco !== undefined) livro.preco = novosDados.preco;
+  if (novosDados.estoque !== undefined) livro.estoque = novosDados.estoque;
   return livro;
 }
 
-function deletarLivro(indice) {
-  const livro = livros[indice];
-  if (!livro) return false;
-
-  livros.splice(indice, 1);
+function deletarLivro(id) {
+  const posicao = livros.findIndex((livro) => livro.id === Number(id));
+  if (posicao === -1) return false;
+  
+  livros.splice(posicao, 1);
   return true;
 }
 
+function listarLivros(filtros) {
+  return livros;
+}
+
 module.exports = {
-  listarTodos,
   listarLivros,
-  buscarLivroPorIndice,
+  buscarLivroPorId,
   criarLivro,
   atualizarLivro,
   atualizarParcialLivro,

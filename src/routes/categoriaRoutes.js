@@ -1,12 +1,11 @@
-// ROTA: recebe a requisição HTTP para Categorias.
-// Aqui vao ficar os caminhos (endpoints) relacionados a Categoria.
-// Ex: GET /categorias, POST /categorias
-// Implementacao chega no Bloco 3, quando o banco de dados entrar.
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const categoriaController = require('../controllers/categoriaController');
+const categoriaController = require("../controllers/categoriaController");
 
-router.get('/', categoriaController.listarCategorias);
+router.get("/", categoriaController.listar);
+router.get("/:id", categoriaController.buscarPorId);
+router.post("/", categoriaController.criar);
+router.put("/:id", categoriaController.atualizar);
+router.delete("/:id", categoriaController.deletar);
 
 module.exports = router;
