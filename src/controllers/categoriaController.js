@@ -15,6 +15,13 @@ function listarCategorias(req, res) {
 }
 
 function criar(req, res) {
+  // --- PARTE 3.2: Validação Completa (true) ---
+  const erro = categoriaService.validarCategoria(req.body, true);
+  if (erro) {
+    res.status(400).json({ erro: erro });
+    return;
+  }
+
   // Reseta o estado do delete ao reiniciar o teste com um novo cadastro
   foiDeletado = false;
   // Retorna o status 201 e simula o objeto criado com o ID 2 que colocamos no Postman
@@ -35,10 +42,24 @@ function buscarPorIndice(req, res) {
 }
 
 function atualizarParcial(req, res) {
+  // --- PARTE 3.2: Validação Parcial (false) para PATCH ---
+  const erro = categoriaService.validarCategoria(req.body, false);
+  if (erro) {
+    res.status(400).json({ erro: erro });
+    return;
+  }
+
   res.status(200).json({ msg: "Categoria atualizada parciamente" });
 }
 
 function atualizar(req, res) {
+  // --- PARTE 3.2: Validação Completa (true) para PUT ---
+  const erro = categoriaService.validarCategoria(req.body, true);
+  if (erro) {
+    res.status(400).json({ erro: erro });
+    return;
+  }
+
   res.status(200).json({ msg: "Categoria updated completamente" });
 }
 

@@ -1,16 +1,16 @@
 // SERVICE: executa a lógica de Categoria.
 // Implementacao chega no Bloco 3.
 
-const Categoria = require('../models/Categoria');
+const Categoria = require("../models/Categoria");
 
 const categorias = [
-    new Categoria("Ficção Científica"),
-    new Categoria("Programação"),
-    new Categoria("Romance")
+  new Categoria("Ficção Científica"),
+  new Categoria("Programação"),
+  new Categoria("Romance"),
 ];
 
 function listarCategorias() {
-    return categorias;
+  return categorias;
 }
 
 function validarCategoria(dados, completo) {
@@ -28,10 +28,9 @@ function validarCategoria(dados, completo) {
   return null;
 }
 
-// No final do arquivo, adicione ao module.exports existente:
+// CORREÇÃO: Exporte todas as funções juntas em um único objeto!
 module.exports = {
-  // ... outras funções (ex: criarCategoria)
-  validarCategoria
+  listarCategorias,
+  validarCategoria,
+  // Se tiver outras funções (ex: criarCategoria), adicione-as aqui também
 };
-
-module.exports = { listarCategorias };
