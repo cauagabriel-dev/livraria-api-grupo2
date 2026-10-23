@@ -6,6 +6,8 @@ const logger = require("./middlewares/logger");
 const app = express();
 const PORTA = 3000;
 
+app.use(express.json()); 
+
 app.use(logger); //Vem primeiro, porque tem a parte de logar a requisição antes de passar para as rotas
 app.use(routes);
 
