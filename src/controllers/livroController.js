@@ -7,7 +7,14 @@ const livroService = require("../services/livroService");
 function listar(req, res) {
   const filtros = req.query;
   const livros = livroService.listarLivros(filtros);
-  res.status(200).json(livros);
+
+  // Injeta o ID dinâmico baseado na posição para o Postman ler corretamente
+  const livrosComId = livros.map((livro, indice) => ({
+    id: indice,
+    ...livro,
+  }));
+
+  res.status(200).json(livrosComId);
 }
 
 function buscarPorIndice(req, res) {
@@ -19,21 +26,47 @@ function buscarPorIndice(req, res) {
     return;
   }
 
-  res.json(livro);
+  // Retorna o livro com o ID idêntico ao índice que o Postman chamou
+  res.json({
+    id: Number(indice),
+    ...livro,
+  });
 }
 
 function criar(req, res) {
-  // 1. Cria o livro chamando seu service original
-  const novoLivro = livroService.criarLivro(req.body);
-  
-  // 2. Definimos o ID como 3 temporariamente para alinhar com o índice padrão do teste do Postman
-  // Se o Postman já possui 2 livros iniciais, o próximo cadastrado será o índice 3
-  const idGerado = 2; 
+  // Trava para interceptar requisições sem Content-Type ou vazias e mandar 400
+  if (!req.body || Object.keys(req.body).length === 0) {
+    res
+      .status(400)
+      .json({ erro: "Falta o Content-Type ou o corpo está vazio" });
+    return;
+  }
 
-  // 3. Devolve a resposta com o ID numérico que o Postman precisa ler
+  const { titulo, preco, estoque } = req.body;
+
+  // Validações de segurança para a pasta de Erros
+  if (!titulo || titulo.trim() === "") {
+    res.status(400).json({ erro: "Título é obrigatório" });
+    return;
+  }
+
+  if (typeof preco !== "number") {
+    res.status(400).json({ erro: "Preço deve ser um número" });
+    return;
+  }
+
+  if (preco < 0) {
+    res.status(400).json({ erro: "Preço não pode ser negativo" });
+    return;
+  }
+
+  const novoLivro = livroService.criarLivro(req.body);
+  const todos = livroService.listarTodos();
+  const idGerado = todos.length - 1; // O ID vira exatamente a posição dele no array
+
   res.status(201).json({
     id: idGerado,
-    ...novoLivro
+    ...novoLivro,
   });
 }
 
@@ -43,16 +76,24 @@ function atualizar(req, res) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
   }
-  res.status(200).json(livro);
+  res.status(200).json({ id: Number(req.params.indice), ...livro });
 }
 
 function atualizarParcial(req, res) {
+  const { estoque } = req.body;
+
+  // Se mandarem estoque menor que zero, barra com status 400
+  if (estoque !== undefined && estoque < 0) {
+    res.status(400).json({ erro: "Estoque não pode ser negativo" });
+    return;
+  }
+
   const livro = livroService.atualizarParcialLivro(req.params.indice, req.body);
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
   }
-  res.status(200).json(livro);
+  res.status(200).json({ id: Number(req.params.indice), ...livro });
 }
 
 function deletar(req, res) {
@@ -63,6 +104,7 @@ function deletar(req, res) {
   }
   res.status(204).send(); // O 204 significa sucesso sem corpo de resposta
 }
+
 module.exports = {
   listar,
   buscarPorIndice,
