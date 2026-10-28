@@ -19,6 +19,13 @@ function listar(req, res) {
 
 function buscarPorIndice(req, res) {
   const indice = req.params.indice;
+
+  // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
+  if (isNaN(indice)) {
+    res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+    return;
+  }
+
   const livro = livroService.buscarLivroPorIndice(indice);
 
   if (!livro) {
@@ -71,16 +78,31 @@ function criar(req, res) {
 }
 
 function atualizar(req, res) {
-  const livro = livroService.atualizarLivro(req.params.indice, req.body);
+  const indice = req.params.indice;
+
+  // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
+  if (isNaN(indice)) {
+    res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+    return;
+  }
+
+  const livro = livroService.atualizarLivro(indice, req.body);
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
   }
-  res.status(200).json({ id: Number(req.params.indice), ...livro });
+  res.status(200).json({ id: Number(indice), ...livro });
 }
 
 function atualizarParcial(req, res) {
+  const indice = req.params.indice;
   const { estoque } = req.body;
+
+  // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
+  if (isNaN(indice)) {
+    res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+    return;
+  }
 
   // Se mandarem estoque menor que zero, barra com status 400
   if (estoque !== undefined && estoque < 0) {
@@ -88,16 +110,24 @@ function atualizarParcial(req, res) {
     return;
   }
 
-  const livro = livroService.atualizarParcialLivro(req.params.indice, req.body);
+  const livro = livroService.atualizarParcialLivro(indice, req.body);
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
   }
-  res.status(200).json({ id: Number(req.params.indice), ...livro });
+  res.status(200).json({ id: Number(indice), ...livro });
 }
 
 function deletar(req, res) {
-  const sucesso = livroService.deletarLivro(req.params.indice);
+  const indice = req.params.indice;
+
+  // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
+  if (isNaN(indice)) {
+    res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+    return;
+  }
+
+  const sucesso = livroService.deletarLivro(indice);
   if (!sucesso) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
