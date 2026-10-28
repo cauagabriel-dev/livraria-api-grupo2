@@ -1,20 +1,21 @@
 // CONTROLLER (o "chef"): decide o que fazer com cada pedido.
 // Recebe da rota, chama o service certo, devolve a resposta.
-// Implementacao chega no Bloco 3.
 
 const livroService = require("../services/livroService");
 
-function listar(req, res) {
-  const filtros = req.query;
-  const livros = livroService.listarLivros(filtros);
-
-  // Injeta o ID dinâmico baseado na posição para o Postman ler corretamente
-  const livrosComId = livros.map((livro, indice) => ({
-    id: indice,
-    ...livro,
-  }));
-
-  res.status(200).json(livrosComId);
+// Função adaptada para buscar os dados de forma assíncrona do MySQL
+async function listar(req, res) {
+  try {
+    const filtros = req.query;
+    
+    // O "await" faz o Controller esperar o Service buscar os livros no MySQL
+    const livros = await livroService.listarLivros(filtros);
+    
+    res.status(200).json(livros);
+  } catch (erro) {
+    // Caso aconteça algum problema no banco, a API não cai e avisa o erro 500
+    res.status(500).json({ erro: "Erro ao buscar livros no banco de dados." });
+  }
 }
 
 function buscarPorIndice(req, res) {

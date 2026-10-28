@@ -1,6 +1,10 @@
+require("dotenv").config();
+
 const express = require("express");
 const routes = require("./routes");
 const logger = require("./middlewares/logger");
+// 1. ADICIONE ESSA LINHA AQUI EMBAIXO PARA IMPORTAR O TESTE DO BANCO:
+const { testarConexao } = require("./config/db"); 
 
 // Traz os middlewares para segurar os erros da API
 const naoEncontrado = require("./middlewares/naoEncontrado");
@@ -32,4 +36,6 @@ app.use(tratarErros);
 
 app.listen(PORTA, () => {
   console.log("Servidor rodando em http://localhost:" + PORTA);
+  // 2. ADICIONE ESSA LINHA AQUI EMBAIXO PARA TESTAR A CONEXÃO COM O MYSQL:
+  testarConexao(); 
 });

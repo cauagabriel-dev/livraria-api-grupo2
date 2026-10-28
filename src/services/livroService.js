@@ -1,9 +1,11 @@
 // SERVICE (o "cozinheiro"): executa a logica de verdade.
 // Buscar, calcular, validar.
-// Implementacao chega no Bloco 3.
 
 const Livro = require("../models/Livro");
+// Importa a conexão pool do MySQL
+const { db } = require("../config/db");
 
+// Array temporário em memória (será substituído por completo nas próximas aulas)
 const livros = [
   new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
   new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
@@ -17,26 +19,35 @@ function buscarLivroPorIndice(indice) {
   return livros[indice];
 }
 
-function listarLivros(filtros) {
-  let resultado = livros;
+// Transformada em ASSÍNCRONA para buscar os dados direto do MySQL
+async function listarLivros(filtros) {
+  // O "await" faz a API esperar o MySQL responder a query.
+  // [linhas] recebe o array de registros vindo da tabela de livros.
+  const [linhas] = await db.query("SELECT * FROM livros");
+  
+  let resultado = linhas;
 
-  if (filtros.autor) {
-    resultado = resultado.filter((livro) =>
-      livro.autor.toLowerCase().includes(filtros.autor.toLowerCase()),
-    );
+  // Aplica os filtros sobre os dados vindos do banco de dados
+  if (filtros) {
+    if (filtros.autor) {
+      resultado = resultado.filter((livro) =>
+        livro.autor.toLowerCase().includes(filtros.autor.toLowerCase())
+      );
+    }
 
     if (filtros.precoMax) {
       resultado = resultado.filter(
-        (livro) => livro.preco <= Number(filtros.precoMax),
+        (livro) => livro.preco <= Number(filtros.precoMax)
       );
     }
 
     if (filtros.estoqueMin) {
       resultado = resultado.filter(
-        (livro) => livro.estoque >= Number(filtros.estoqueMin),
+        (livro) => livro.estoque >= Number(filtros.estoqueMin)
       );
     }
   }
+  
   return resultado;
 }
 
@@ -47,7 +58,7 @@ function criarLivro(dados) {
     dados.preco,
     dados.estoque,
   );
-  livros.push(novoLivro); //Adiciona um no final
+  livros.push(novoLivro); // Adiciona um no final
   return novoLivro;
 }
 
