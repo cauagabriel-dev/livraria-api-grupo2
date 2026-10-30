@@ -22,7 +22,7 @@ async function buscarPorId(req, res) {
 };
 
 
-function criar(req, res) {
+async function criar(req, res) {
   // Trava para interceptar requisições sem Content-Type ou vazias e mandar 400
   if (!req.body || Object.keys(req.body).length === 0) {
     res
@@ -49,7 +49,7 @@ function criar(req, res) {
     return;
   }
 
-  const novoLivro = livroService.criarLivro(req.body);
+  const novoLivro = await livroService.criarLivro(req.body);
   const todos = livroService.listarTodos();
   const idGerado = todos.length - 1; // O ID vira exatamente a posição dele no array
 
@@ -59,7 +59,7 @@ function criar(req, res) {
   });
 }
 
-function atualizar(req, res) {
+async function atualizar(req, res) {
   const indice = req.params.indice;
 
   // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
@@ -68,7 +68,7 @@ function atualizar(req, res) {
     return;
   }
 
-  const livro = livroService.atualizarLivro(indice, req.body);
+  const livro = await livroService.atualizarLivro(indice, req.body);
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
@@ -76,7 +76,7 @@ function atualizar(req, res) {
   res.status(200).json({ id: Number(indice), ...livro });
 }
 
-function atualizarParcial(req, res) {
+async function atualizarParcial(req, res) {
   const indice = req.params.indice;
   const { estoque } = req.body;
 
@@ -92,7 +92,7 @@ function atualizarParcial(req, res) {
     return;
   }
 
-  const livro = livroService.atualizarParcialLivro(indice, req.body);
+  const livro = await livroService.atualizarParcialLivro(indice, req.body);
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
@@ -100,7 +100,7 @@ function atualizarParcial(req, res) {
   res.status(200).json({ id: Number(indice), ...livro });
 }
 
-function deletar(req, res) {
+async function deletar(req, res) {
   const indice = req.params.indice;
 
   // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
@@ -109,7 +109,7 @@ function deletar(req, res) {
     return;
   }
 
-  const sucesso = livroService.deletarLivro(indice);
+  const sucesso = await livroService.deletarLivro(indice);
   if (!sucesso) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;

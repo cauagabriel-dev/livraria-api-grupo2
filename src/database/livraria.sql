@@ -22,3 +22,13 @@ INSERT INTO livros (titulo, autor, preco, estoque) VALUES
 
 SELECT * FROM livros;
 SELECT * FROM livros WHERE id = 3;
+
+-- Parte Extra
+SELECT * FROM livros WHERE preco < 50;
+SELECT * FROM livros WHERE autor = 'J.R.R. Tolkien';
+SELECT * FROM livros WHERE estoque > 10;
+
+INSERT INTO livros (titulo, autor, preco, estoque)
+VALUES ('A Revolução dos Bichos', 'George Orwell', 34.90, 10);
+
+SELECT * FROM livros;

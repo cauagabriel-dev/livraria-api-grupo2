@@ -1,10 +1,7 @@
 // SERVICE (o "cozinheiro"): executa a logica de verdade.
 // Buscar, calcular, validar.
 
-const Livro = require("../models/Livro");
 const { db } = require("../config/db");
-
-const livros = [];
 
 function listarTodos() {
   return livros;
@@ -35,45 +32,37 @@ async function listarLivros(filtros) {
   return resultado;
 }
 
-function criarLivro(dados) {
-  const novoLivro = new Livro(
-    dados.titulo,
-    dados.autor,
-    dados.preco,
-    dados.estoque,
+async function criarLivro(dados) {
+  const [resultado] = await db.query(
+    "INSERT INTO livros (titulo, autor, preco, estoque) VALUES (?, ?, ?, ?)",
+    [dados.titulo, dados.autor, dados.preco, dados.estoque],
   );
-  livros.push(novoLivro); // Adiciona um no final
-  return novoLivro;
+  return await buscarLivroPorId(resultado.insertId);
 }
 
-function atualizarLivro(id, dados) {
-  const livro = livros.find((livro) => livro.id === Number(id));
-  if (!livro) return null;
-
-  livro.titulo = dados.titulo;
-  livro.autor = dados.autor;
-  livro.preco = dados.preco;
-  livro.estoque = dados.estoque;
-  return livro;
+async function atualizarLivro(id, dados) {
+  const [resultado] = await db.query(
+    "UPDATE livros SET titulo = ?, autor = ?, preco = ?, estoque = ? WHERE id = ?",
+    [dados.titulo, dados.autor, dados.preco, dados.estoque, id],
+  );
+  if (resultado.affectedRows === 0) return null;
+  return await buscarLivroPorId(id);
 }
 
-function atualizarParcialLivro(id, dados) {
-  const livro = livros.find((livro) => livro.id === Number(id));
+async function atualizarParcialLivro(id, dados) {
+  const livro = await buscarLivroPorId(id);
   if (!livro) return null;
 
   if (dados.titulo !== undefined) livro.titulo = dados.titulo;
   if (dados.autor !== undefined) livro.autor = dados.autor;
   if (dados.preco !== undefined) livro.preco = dados.preco;
   if (dados.estoque !== undefined) livro.estoque = dados.estoque;
-  return livro;
+  return await atualizarLivro(id, livro);
 }
 
-function deletarLivro(id) {
-  const posicao = livros.findIndex((livro) => livro.id === Number(id));
-  if (posicao === -1) return false;
-
-  livros.splice(posicao, 1);
-  return true;
+async function deletarLivro(id) {
+  const [resultado] = await db.query("DELETE FROM livros WHERE id = ?", [id]);
+  return resultado.affectedRows > 0;
 }
 
 // CORREÇÃO: Exportação movida para fora de qualquer função, no escopo global do arquivo
