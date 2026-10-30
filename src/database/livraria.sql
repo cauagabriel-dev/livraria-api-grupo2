@@ -18,7 +18,8 @@ INSERT INTO livros (titulo, autor, preco, estoque) VALUES
   ('Clean Code', 'Robert C. Martin', 89.90, 12),
   ('Eloquent JavaScript', 'Marijn Haverbeke', 45.00, 20),
   ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8),
-  ('O Senhor dos Anéis', 'J.R.R. Tolkien', 59.90, 15);
+  ('O Senhor dos Anéis', 'J.R.R. Tolkien', 59.90, 15),
+  ('A Revolução dos Bichos', 'George Orwell', 34.90, 10);
 
 SELECT * FROM livros;
 SELECT * FROM livros WHERE id = 3;
@@ -27,8 +28,3 @@ SELECT * FROM livros WHERE id = 3;
 SELECT * FROM livros WHERE preco < 50;
 SELECT * FROM livros WHERE autor = 'J.R.R. Tolkien';
 SELECT * FROM livros WHERE estoque > 10;
-
-INSERT INTO livros (titulo, autor, preco, estoque)
-VALUES ('A Revolução dos Bichos', 'George Orwell', 34.90, 10);
-
-SELECT * FROM livros;
