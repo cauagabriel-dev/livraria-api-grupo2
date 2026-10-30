@@ -2,50 +2,34 @@
 // Buscar, calcular, validar.
 
 const Livro = require("../models/Livro");
-// Importa a conexão pool do MySQL
 const { db } = require("../config/db");
 
-// Array temporário em memória (será substituído por completo nas próximas aulas)
-const livros = [
-  new Livro("Clean Code", "Robert C. Martin", 89.9, 12),
-  new Livro("Eloquent JavaScript", "Marijn Haverbeke", 45.0, 20),
-];
+const livros = [];
 
 function listarTodos() {
   return livros;
 }
 
-function buscarLivroPorIndice(indice) {
-  return livros[indice];
+async function buscarLivroPorId(id) {
+  const [linhas] = await db.query("SELECT * FROM livros WHERE id = ?", [id]);
+  return linhas[0];
 }
 
-// Transformada em ASSÍNCRONA para buscar os dados direto do MySQL
+// CORREÇÃO: Função assíncrona única e limpa para buscar do MySQL
 async function listarLivros(filtros) {
-  // O "await" faz a API esperar o MySQL responder a query.
-  // [linhas] recebe o array de registros vindo da tabela de livros.
+  // Busca as linhas diretamente do banco de dados
   const [linhas] = await db.query("SELECT * FROM livros");
-  
   let resultado = linhas;
 
-  // Aplica os filtros sobre os dados vindos do banco de dados
-  if (filtros) {
-    if (filtros.autor) {
-      resultado = resultado.filter((livro) =>
-        livro.autor.toLowerCase().includes(filtros.autor.toLowerCase())
-      );
-    }
-
-    if (filtros.precoMax) {
-      resultado = resultado.filter(
-        (livro) => livro.preco <= Number(filtros.precoMax)
-      );
-    }
-
-    if (filtros.estoqueMin) {
-      resultado = resultado.filter(
-        (livro) => livro.estoque >= Number(filtros.estoqueMin)
-      );
-    }
+  if (filtros.autor) {
+    resultado = resultado.filter((livro) =>
+      livro.autor.toLowerCase().includes(filtros.autor.toLowerCase()),
+    );
+  }
+  if (filtros.precoMax) {
+    resultado = resultado.filter(
+      (livro) => livro.preco <= Number(filtros.precoMax),
+    );
   }
   
   return resultado;
@@ -62,8 +46,8 @@ function criarLivro(dados) {
   return novoLivro;
 }
 
-function atualizarLivro(indice, dados) {
-  const livro = livros[indice];
+function atualizarLivro(id, dados) {
+  const livro = livros.find((livro) => livro.id === Number(id));
   if (!livro) return null;
 
   livro.titulo = dados.titulo;
@@ -73,8 +57,8 @@ function atualizarLivro(indice, dados) {
   return livro;
 }
 
-function atualizarParcialLivro(indice, dados) {
-  const livro = livros[indice];
+function atualizarParcialLivro(id, dados) {
+  const livro = buscarLivroPorId(id);
   if (!livro) return null;
 
   if (dados.titulo !== undefined) livro.titulo = dados.titulo;
@@ -84,18 +68,19 @@ function atualizarParcialLivro(indice, dados) {
   return livro;
 }
 
-function deletarLivro(indice) {
-  const livro = livros[indice];
-  if (!livro) return false;
+function deletarLivro(id) {
+  const posicao = livros.findIndex((livro) => livro.id === Number(id));
+  if (posicao === -1) return false;
 
-  livros.splice(indice, 1);
+  livros.splice(posicao, 1);
   return true;
 }
 
+// CORREÇÃO: Exportação movida para fora de qualquer função, no escopo global do arquivo
 module.exports = {
   listarTodos,
   listarLivros,
-  buscarLivroPorIndice,
+  buscarLivroPorId,
   criarLivro,
   atualizarLivro,
   atualizarParcialLivro,

@@ -3,43 +3,24 @@
 
 const livroService = require("../services/livroService");
 
-// Função adaptada para buscar os dados de forma assíncrona do MySQL
 async function listar(req, res) {
-  try {
-    const filtros = req.query;
-    
-    // O "await" faz o Controller esperar o Service buscar os livros no MySQL
-    const livros = await livroService.listarLivros(filtros);
-    
-    res.status(200).json(livros);
-  } catch (erro) {
-    // Caso aconteça algum problema no banco, a API não cai e avisa o erro 500
-    res.status(500).json({ erro: "Erro ao buscar livros no banco de dados." });
-  }
+  const filtros = req.query;
+  const livros = await livroService.listarLivros(filtros);
+  res.status(200).json(livros);
 }
 
-function buscarPorIndice(req, res) {
-  const indice = req.params.indice;
-
-  // TRAVA DE SEGURANÇA: Se o índice não for um número válido, retorna 400
-  if (isNaN(indice)) {
-    res.status(400).json({ erro: "O id enviado deve ser um número válido" });
-    return;
-  }
-
-  const livro = livroService.buscarLivroPorIndice(indice);
+async function buscarPorId(req, res) {
+  const id = req.params.id;
+  const livro = await livroService.buscarLivroPorId(id);
 
   if (!livro) {
     res.status(404).json({ erro: "Livro não encontrado" });
     return;
   }
 
-  // Retorna o livro com o ID idêntico ao índice que o Postman chamou
-  res.json({
-    id: Number(indice),
-    ...livro,
-  });
-}
+  res.json(livro);
+};
+
 
 function criar(req, res) {
   // Trava para interceptar requisições sem Content-Type ou vazias e mandar 400
@@ -138,7 +119,7 @@ function deletar(req, res) {
 
 module.exports = {
   listar,
-  buscarPorIndice,
+  buscarPorId,
   criar,
   atualizar,
   atualizarParcial,
