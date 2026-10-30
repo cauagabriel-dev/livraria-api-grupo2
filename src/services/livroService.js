@@ -31,7 +31,7 @@ async function listarLivros(filtros) {
       (livro) => livro.preco <= Number(filtros.precoMax),
     );
   }
-  
+
   return resultado;
 }
 
@@ -58,7 +58,7 @@ function atualizarLivro(id, dados) {
 }
 
 function atualizarParcialLivro(id, dados) {
-  const livro = buscarLivroPorId(id);
+  const livro = livros.find((livro) => livro.id === Number(id));
   if (!livro) return null;
 
   if (dados.titulo !== undefined) livro.titulo = dados.titulo;

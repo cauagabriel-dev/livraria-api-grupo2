@@ -1,19 +1,12 @@
 require("dotenv").config();
-<<<<<<< HEAD
-const { testarConexao } = require("./config/db");
-=======
 
->>>>>>> f499098e1f2d4664c1f2ea6dbb2bae1598239075
+// 1. ADICIONE ESSA LINHA AQUI EMBAIXO PARA IMPORTAR O TESTE DO BANCO:
+const { testarConexao } = require("./config/db");
+
 const express = require("express");
 const routes = require("./routes");
 const logger = require("./middlewares/logger");
-// 1. ADICIONE ESSA LINHA AQUI EMBAIXO PARA IMPORTAR O TESTE DO BANCO:
-const { testarConexao } = require("./config/db"); 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f499098e1f2d4664c1f2ea6dbb2bae1598239075
 // Traz os middlewares para segurar os erros da API
 const naoEncontrado = require("./middlewares/naoEncontrado");
 const tratarErros = require("./middlewares/tratarErros");
