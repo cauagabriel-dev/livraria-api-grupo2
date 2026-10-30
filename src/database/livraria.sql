@@ -19,10 +19,9 @@ INSERT INTO livros (titulo, autor, preco, estoque) VALUES
   ('Eloquent JavaScript', 'Marijn Haverbeke', 45.00, 20),
   ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8),
   ('O Senhor dos Anéis', 'J.R.R. Tolkien', 59.90, 15),
-  ('A Revolução dos Bichos', 'George Orwell', 34.90, 10);
+  ('A Revolucao dos Bichos', 'George Orwell', 34.90, 10);
 
 SELECT * FROM livros;
-SELECT * FROM livros WHERE id = 3;
 
 -- Parte Extra
 SELECT * FROM livros WHERE preco < 50;
