@@ -1,4 +1,4 @@
--- Script do banco da Livraria
+	-- Script do banco da Livraria
 -- Rode este arquivo inteiro no MySQL Workbench (raio ⚡).
 -- Ele apaga e recria tudo: pode rodar de novo sempre que quiser começar do zero.
 
@@ -17,13 +17,6 @@ CREATE TABLE livros (
 INSERT INTO livros (titulo, autor, preco, estoque) VALUES
   ('Clean Code', 'Robert C. Martin', 89.90, 12),
   ('Eloquent JavaScript', 'Marijn Haverbeke', 45.00, 20),
-  ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8),
-  ('O Senhor dos Anéis', 'J.R.R. Tolkien', 59.90, 15),
-  ('A Revolucao dos Bichos', 'George Orwell', 34.90, 10);
+  ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8);
 
 SELECT * FROM livros;
-
--- Parte Extra
-SELECT * FROM livros WHERE preco < 50;
-SELECT * FROM livros WHERE autor = 'J.R.R. Tolkien';
-SELECT * FROM livros WHERE estoque > 10;
