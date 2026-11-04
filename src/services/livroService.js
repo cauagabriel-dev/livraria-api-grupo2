@@ -85,22 +85,24 @@ async function buscarLivroPorId(id) {
   return linhas[0];
 }
 
-async function listarLivros(filtros) {
-  const [linhas] = await db.query("SELECT * FROM livros");
-  let resultado = linhas;
+async function listarLivros(filtros = {}) {
+  let sql = "SELECT * FROM livros WHERE 1=1";
+  const params = [];
 
-  if (filtros && filtros.autor) {
-    resultado = resultado.filter((livro) =>
-      livro.autor.toLowerCase().includes(filtros.autor.toLowerCase()),
-    );
-  }
-  if (filtros && filtros.precoMax) {
-    resultado = resultado.filter(
-      (livro) => livro.preco <= Number(filtros.precoMax),
-    );
+  // Filtro por Autor diretamente no MySQL
+  if (filtros.autor) {
+    sql += " AND LOWER(autor) LIKE ?";
+    params.push(`%${filtros.autor.toLowerCase()}%`);
   }
 
-  return resultado;
+  // Filtro por Preço Máximo diretamente no MySQL
+  if (filtros.precoMax) {
+    sql += " AND preco <= ?";
+    params.push(Number(filtros.precoMax));
+  }
+
+  const [linhas] = await db.query(sql, params);
+  return linhas;
 }
 
 async function criarLivro(dados) {
