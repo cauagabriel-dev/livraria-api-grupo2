@@ -98,7 +98,7 @@ livraria-api-grupo2/
 
 1. **Clone o repositório e instale as dependências:**
    ```bash
-   git clone https://github.com
+   git clone https://github.com/cauagabriel-dev/livraria-api-grupo2
    cd livraria-api-grupo2
    npm install
    ```
