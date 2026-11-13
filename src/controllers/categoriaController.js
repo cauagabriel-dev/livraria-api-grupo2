@@ -1,77 +1,88 @@
 // CONTROLLER: decide o que fazer com pedidos de Categoria.
-// Implementacao chega no Bloco 3.
 
 const categoriaService = require("../services/categoriaService");
 
-let foiDeletado = false;
-
-function listarCategorias(req, res) {
-  const categorias = categoriaService.listarCategorias();
+async function listarCategorias(req, res) {
+  const categorias = await categoriaService.listarCategorias(req.query);
   res.status(200).json(categorias);
 }
 
-function criar(req, res) {
+async function buscarPorId(req, res) {
+  const id = Number(req.params.id);
+  const categoria = await categoriaService.buscarCategoriaPorId(id);
+
+  if (!categoria) {
+    res.status(404).json({ erro: "Categoria não encontrada" });
+    return;
+  }
+
+  res.status(200).json(categoria);
+}
+
+async function criar(req, res) {
   const erro = categoriaService.validarCategoria(req.body, true);
   if (erro) {
     res.status(400).json({ erro: erro });
     return;
   }
 
-  // Reseta o estado do delete ao reiniciar o teste com um novo cadastro
-  foiDeletado = false;
-  // Retorna o status 201 e simula o objeto criado com o ID 2 que colocamos no Postman
-  res.status(201).json({ id: 2, ...req.body });
+  const novaCategoria = await categoriaService.criarCategoria(req.body);
+  res.status(201).json(novaCategoria);
 }
 
-function buscarPorIndice(req, res) {
-  const id = req.params.indice;
+async function atualizar(req, res) {
+  const id = Number(req.params.id);
+  const erro = categoriaService.validarCategoria(req.body, true);
+  if (erro) {
+    res.status(400).json({ erro: erro });
+    return;
+  }
 
-  // Se o Postman buscar o ID falso ou se já foi deletado, manda 404
-  if (id === "99999" || foiDeletado) {
+  const atualizada = await categoriaService.atualizarCategoria(id, req.body);
+  if (!atualizada) {
     res.status(404).json({ erro: "Categoria não encontrada" });
     return;
   }
 
-  const categoriasDoService = categoriaService.listarCategorias();
-  const categoriaReal = categoriasDoService.find((c) => c.id === Number(id));
-
-  if (!categoriaReal) {
-    res.status(200).json({ id: 2, nome: "Livros" });
-    return;
-  }
-
-  res.status(200).json(categoriaReal);
+  res.status(200).json(atualizada);
 }
 
-function atualizarParcial(req, res) {
+async function atualizarParcial(req, res) {
+  const id = Number(req.params.id);
   const erro = categoriaService.validarCategoria(req.body, false);
   if (erro) {
     res.status(400).json({ erro: erro });
     return;
   }
 
-  res.status(200).json({ msg: "Categoria atualizada parciamente" });
-}
-
-function atualizar(req, res) {
-  const erro = categoriaService.validarCategoria(req.body, true);
-  if (erro) {
-    res.status(400).json({ erro: erro });
+  const atualizada = await categoriaService.atualizarParcialCategoria(
+    id,
+    req.body,
+  );
+  if (!atualizada) {
+    res.status(404).json({ erro: "Categoria não encontrada" });
     return;
   }
 
-  res.status(200).json({ msg: "Categoria updated completamente" });
+  res.status(200).json(atualizada);
 }
 
-function deletar(req, res) {
-  foiDeletado = true;
-  res.status(204).send(); // Status 204 exige resposta sem corpo
+async function deletar(req, res) {
+  const id = Number(req.params.id);
+  const deletada = await categoriaService.deletarCategoria(id);
+
+  if (!deletada) {
+    res.status(404).json({ erro: "Categoria não encontrada" });
+    return;
+  }
+
+  res.status(204).send();
 }
 
 module.exports = {
   listarCategorias,
   criar,
-  buscarPorIndice,
+  buscarPorId,
   atualizarParcial,
   atualizar,
   deletar,

@@ -906,6 +906,106 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Guia 22 - Relacionamento",
+      "item": [
+        {
+          "name": "1 - Livro vem com a categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Veio o nome da categoria\", function () {\r\n    pm.expect(pm.response.json().categoria).to.eql(\"Tecnologia\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/livros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "livros",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2 - Livro com categoria inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"titulo\": \"A Revolução dos Estrupicios\",\r\n  \"autor\": \"I. Francisco\",\r\n  \"preco\": 35.9,\r\n  \"estoque\": 15,\r\n  \"categoria_id\": 99999\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/livros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "livros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3 - Apagar categoria com livros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 409\", function () {\r\n    pm.response.to.have.status(409);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [

@@ -15,13 +15,11 @@ async function buscarPorId(req, res, next) {
   try {
     const id = req.params.id || req.params.indice;
 
-    // 1º: Valida se o ID é realmente um número
     if (isNaN(id)) {
       res.status(400).json({ erro: "O id enviado deve ser um número válido" });
       return;
     }
 
-    // 2º: Só vai para o banco se passar na validação acima
     const livro = await livroService.buscarLivroPorId(id);
 
     if (!livro) {
@@ -43,9 +41,15 @@ async function criar(req, res, next) {
     return;
   }
 
-  const { titulo, preco, estoque, autor } = req.body;
+  const erroValidacao = livroService.validarLivro(req.body, true);
+  if (erroValidacao) {
+    res.status(400).json({ erro: erroValidacao });
+    return;
+  }
 
-  if (!titulo || titulo.trim() === "" || !autor || autor.trim() === "") {
+  const { titulo, preco, autor } = req.body;
+
+  if (titulo.trim() === "" || autor.trim() === "") {
     res.status(400).json({ erro: "Título e Autor são obrigatórios" });
     return;
   }
@@ -59,7 +63,6 @@ async function criar(req, res, next) {
     const novoLivro = await livroService.criarLivro(req.body);
     res.status(201).json(novoLivro);
   } catch (error) {
-    // Parte do tratarErros.js!
     next(error);
   }
 }
@@ -70,6 +73,12 @@ async function atualizar(req, res, next) {
 
     if (isNaN(id)) {
       res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+      return;
+    }
+
+    const erroValidacao = livroService.validarLivro(req.body, true);
+    if (erroValidacao) {
+      res.status(400).json({ erro: erroValidacao });
       return;
     }
 
@@ -91,6 +100,12 @@ async function atualizarParcial(req, res, next) {
 
     if (isNaN(id)) {
       res.status(400).json({ erro: "O id enviado deve ser um número válido" });
+      return;
+    }
+
+    const erroValidacao = livroService.validarLivro(req.body, false);
+    if (erroValidacao) {
+      res.status(400).json({ erro: erroValidacao });
       return;
     }
 
@@ -125,7 +140,7 @@ async function deletar(req, res, next) {
       return;
     }
     res.status(204).send();
-  } catch (error) {12
+  } catch (error) {
     next(error);
   }
 }
