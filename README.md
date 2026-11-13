@@ -1,10 +1,10 @@
-# livraria-api-grupo2
+# 📚 livraria-api-grupo2
 
 **API de Gestão da Livraria — PBE 2026**  
 API de Gestão da Livraria — Grupo 2
 
-Projeto da UC de Programação Back-End — Curso Técnico em Desenvolvimento de Sistemas  
-Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
+> Projeto da UC de Programação Back-End — Curso Técnico em Desenvolvimento de Sistemas  
+> Escola SENAI "Santo Paschoal Crepaldi" — Turma `1-2026-SESI_DEV_OC_1`
 
 ---
 
@@ -22,7 +22,7 @@ Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 | Bloco | Integrante | O que ficou sob responsabilidade dele(a) |
 | :--- | :--- | :--- |
 | **Bloco 1** | Ana Júlia | Modelagem e estruturação dos Models (`Pessoa`, `Cliente`, `Funcionario`) |
-| **Bloco 1** | Cauã | Implementar os modelos de produtos (`Livro`, `LivroFisico`, `LivroDigital`) |
+| **Bloco 1** | Cauã | Implementação dos modelos de produtos (`Livro`, `LivroFisico`, `LivroDigital`) |
 | **Bloco 1** | Laura Semensato | Regras de negócio do carrinho de compras e categorias (`Carrinho`, `Categoria`) |
 | **Bloco 1** | Yago | Configuração das rotas, controllers e a parte de teste (`index.js`, `testar.js`) |
 
@@ -39,8 +39,12 @@ Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 ## 🛠️ Tecnologias
 
 * **Node.js** — Ambiente de execução JavaScript no servidor
+* **Express** — Framework para criação do servidor HTTP, rotas e middlewares
+* **JavaScript (ES6+)** — Programação Orientada a Objetos (POO) e lógica do sistema
+* **SQL** — Estruturação e persistência de dados no banco (`livraria.sql`)
+* **Dotenv** — Gerenciamento de variáveis de ambiente (`.env`)
 * **npm** — Gerenciador de pacotes
-* **JavaScript (ES6+)** — Orientação a Objetos e lógica do sistema
+* **Postman** — Testes e validação das requisições da API
 * **Git & GitHub** — Versionamento e trabalho em equipe no repositório
 
 ---
@@ -49,10 +53,21 @@ Escola SENAI "Santo Paschoal Crepaldi" — Turma 1-2026-SESI_DEV_OC_1
 
 ```text
 livraria-api-grupo2/
-├── docs/                  # Documentação e materiais complementares
-├── src/                   # Código-fonte principal da aplicação
-│   ├── controllers/       # Gerenciamento de requisições e respostas
-│   ├── models/            # Classes e modelos de dados (POO)
+├── docs/                      # Documentação e diagramas complementares
+├── postman/                   # Coleções para testes de rotas no Postman
+├── src/                       # Código-fonte principal da aplicação
+│   ├── config/                # Configurações de conexão e ambiente
+│   │   └── db.js              # Configuração do banco de dados
+│   ├── controllers/           # Gerenciamento de requisições e respostas HTTP
+│   │   ├── categoriaController.js
+│   │   └── livroController.js
+│   ├── database/              # Scripts de banco de dados
+│   │   └── livraria.sql       # Estrutura das tabelas SQL
+│   ├── middlewares/           # Interceptadores de requisições e erros
+│   │   ├── logger.js          # Log de requisições recebidas
+│   │   ├── naoEncontrado.js   # Tratamento de rotas inexistentes (404)
+│   │   └── tratarErros.js     # Tratamento global de exceções
+│   ├── models/                # Classes e modelos de dados (POO)
 │   │   ├── Carrinho.js
 │   │   ├── Categoria.js
 │   │   ├── Cliente.js
@@ -61,21 +76,52 @@ livraria-api-grupo2/
 │   │   ├── LivroDigital.js
 │   │   ├── LivroFisico.js
 │   │   └── Pessoa.js
-│   ├── routes/            # Definição dos endpoints e rotas da API
-│   ├── services/          # Regras de negócio e serviços da aplicação
-│   └── index.js           # Ponto de entrada da aplicação
-├── .gitignore             # Arquivos e pastas ignorados pelo Git
-├── package.json           # Configurações do projeto e dependências
-├── package-lock.json      # Mapeamento exato de versões das dependências
-├── testar.js              # Script para testes locais e validação
-└── README.md              # Documentação principal do projeto
+│   ├── routes/                # Definição dos endpoints e rotas da API
+│   │   ├── categoriaRoutes.js
+│   │   ├── index.js
+│   │   └── livroRoutes.js
+│   ├── services/              # Regras de negócio e serviços da aplicação
+│   │   ├── categoriaService.js
+│   │   └── livroService.js
+│   └── index.js               # Ponto de entrada e configuração do servidor
+├── .env.example               # Modelo de variáveis de ambiente necessárias
+├── .gitignore                 # Arquivos e pastas ignorados pelo Git
+├── package.json               # Configurações do projeto e dependências
+├── package-lock.json          # Mapeamento exato de versões das dependências
+├── testar.js                  # Script para testes locais e validação
+└── README.md                  # Documentação principal do projeto
+```
 
 ---
 
-## Parte 3 - O experimento da ordem
+## 🚀 Como Executar o Projeto
+
+1. **Clone o repositório e instale as dependências:**
+   ```bash
+   git clone https://github.com
+   cd livraria-api-grupo2
+   npm install
+   ```
+
+2. **Configure as variáveis de ambiente:**
+   * Crie um arquivo `.env` na raiz do projeto baseado no `.env.example` e preencha os dados de acesso ao banco.
+
+3. **Crie o banco de dados:**
+   * Execute o script localizado em `src/database/livraria.sql` no seu gerenciador SQL.
+
+4. **Inicie o servidor:**
+   ```bash
+   node src/index.js
+   ```
+
+---
+
+## 🧪 Parte 3 — O Experimento da Ordem
+
+**Cenário testado:** Posicionar `app.use(routes)` antes de `app.use(logger)`.
 
 **O que aconteceu:**
-(Posicionar o app.use(routes) antes de app.use(logger))
+As requisições feitas para as rotas da API pararam de ser registradas no console pelo middleware `logger`.
 
 **Por quê:**
-(O motivo de o comportamento ter mudado com base na ordem dos middlewares do Express é devido a colocação errada da parte de rotas, antes do logger, não vai terá a parte de logar a requisição antes de passar para as rotas. Ou seja, se ele vem depois das rotas, a resposta vai ser enviada antes da requisição chegar nele.)
+No Express, os middlewares são executados em ordem sequencial, de cima para baixo, conforme são declarados no código. Quando uma requisição encontra uma rota correspondente em `routes`, o controller envia a resposta ao cliente e encerra o ciclo da requisição. Como o `logger` foi posicionado depois das rotas, a resposta era enviada antes que a requisição pudesse passar por ele.
