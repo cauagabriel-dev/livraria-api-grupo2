@@ -6,7 +6,6 @@ DROP DATABASE IF EXISTS livraria;
 CREATE DATABASE livraria;
 USE livraria;
 
--- A tabela categorias vem primeiro: a tabela livros aponta para ela.
 CREATE TABLE categorias (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(50) NOT NULL,
@@ -25,20 +24,19 @@ CREATE TABLE livros (
 
 INSERT INTO categorias (nome, descricao) VALUES
   ('Ficção', 'Romances, fantasia e ficção científica'),
-  ('Tecnologia', 'Programação, engenharia de software e afins');
+  ('Tecnologia', 'Programação, engenharia de software e afins'),
+  ('Infantil', 'Livros ilustrados e histórias para crianças');
 
 INSERT INTO livros (titulo, autor, preco, estoque, categoria_id) VALUES
   ('Clean Code', 'Robert C. Martin', 89.90, 12, 2),
   ('Eloquent JavaScript', 'Marijn Haverbeke', 45.00, 20, 2),
-  ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8, 1);
-
-SELECT * FROM livros;
+  ('O Hobbit', 'J.R.R. Tolkien', 39.90, 8, 1),
+  ('O Pequeno Príncipe', 'Antoine de Saint-Exupéry', 29.90, 15, 3),
+  ('Duna', 'Frank Herbert', 79.90, 10, 1),
+  ('O Programador Pragmático', 'Andrew Hunt e David Thomas', 95.00, 7, 2),
+  ('1984', 'George Orwell', 34.90, 14, 1),
+  ('Matilda', 'Roald Dahl', 32.50, 9, 3);
 
 SELECT livros.titulo, categorias.nome
 FROM livros
 JOIN categorias ON livros.categoria_id = categorias.id;
-
-INSERT INTO livros (titulo, autor, preco, estoque, categoria_id)
-VALUES ('Livro Sem Lar', 'Ninguem', 10, 1, 99);
-
-DELETE FROM categorias WHERE id = 1;

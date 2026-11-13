@@ -47,10 +47,18 @@ function validarLivro(dados, completo) {
   if (!dados) return "Envie os dados do livro em JSON";
 
   if (completo) {
-    if (!dados.titulo) return "O titulo e obrigatorio";
-    if (!dados.autor) return "O autor e obrigatorio";
+    if (!dados.titulo || dados.titulo.trim() === "") return "O titulo e obrigatorio";
+    if (!dados.autor || dados.autor.trim() === "") return "O autor e obrigatorio";
     if (dados.preco === undefined) return "O preco e obrigatorio";
     if (dados.estoque === undefined) return "O estoque e obrigatorio";
+  }
+
+  if (dados.preco !== undefined && (typeof dados.preco !== "number" || dados.preco < 0)) {
+    return "O preco deve ser um numero maior ou igual a zero";
+  }
+
+  if (dados.estoque !== undefined && (typeof dados.estoque !== "number" || dados.estoque < 0)) {
+    return "O estoque deve ser um numero maior ou igual a zero";
   }
 
   if (
@@ -63,6 +71,7 @@ function validarLivro(dados, completo) {
 
   return null;
 }
+
 
 async function criarLivro(dados) {
   const [resultado] = await db.query(
