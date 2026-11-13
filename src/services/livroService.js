@@ -15,7 +15,7 @@ async function listarLivros(filtros = {}) {
     "SELECT livros.*, categorias.nome AS categoria FROM livros LEFT JOIN categorias ON livros.categoria_id = categorias.id WHERE 1=1";
   const params = [];
 
-  // Filtro por Autor direto no MySQL
+  // Filtro por Autor diretamente no MySQL
   if (filtros.autor) {
     sql += " AND LOWER(livros.autor) LIKE ?";
     params.push(`%${filtros.autor.toLowerCase()}%`);
@@ -28,8 +28,20 @@ async function listarLivros(filtros = {}) {
   }
 
   const [linhas] = await db.query(sql, params);
-  return linhas;
+  let resultado = linhas;
+
+  // Filtro extra por Categoria
+  if (filtros.categoria) {
+    resultado = resultado.filter(
+      (livro) =>
+        livro.categoria !== null &&
+        livro.categoria.toLowerCase().includes(filtros.categoria.toLowerCase()),
+    );
+  }
+
+  return resultado;
 }
+
 
 function validarLivro(dados, completo) {
   if (!dados) return "Envie os dados do livro em JSON";
