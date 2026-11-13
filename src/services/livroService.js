@@ -88,16 +88,15 @@ async function criarLivro(dados) {
 }
 
 async function atualizarLivro(id, dados) {
+  const atual = await buscarLivroPorId(id);
+  if (!atual) return null;
+
+  const categoriaId =
+    dados.categoria_id !== undefined ? dados.categoria_id : atual.categoria_id;
+
   const [resultado] = await db.query(
     "UPDATE livros SET titulo = ?, autor = ?, preco = ?, estoque = ?, categoria_id = ? WHERE id = ?",
-    [
-      dados.titulo,
-      dados.autor,
-      dados.preco,
-      dados.estoque,
-      dados.categoria_id || null,
-      id,
-    ],
+    [dados.titulo, dados.autor, dados.preco, dados.estoque, categoriaId, id],
   );
   if (resultado.affectedRows === 0) return null;
   return await buscarLivroPorId(id);
