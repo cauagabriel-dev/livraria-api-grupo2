@@ -125,7 +125,7 @@ async function deletar(req, res, next) {
       return;
     }
     res.status(204).send();
-  } catch (error) {
+  } catch (error) {12
     next(error);
   }
 }
